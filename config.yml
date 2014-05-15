@@ -1,0 +1,18 @@
+onDetect:
+  command: ''
+messages:
+  player-message: '&4Advertising is prohibited. If this is a mistake, submit a /modreq!'
+  moderator-message: '&c{player} tried to say the following: &4{message}'
+whitelist:
+  - 127.0.0.1
+  - 0.0.0.0
+  - bukkit.org
+  - minecraft.net
+  - minecraftwiki.net
+checks:
+  domains: true
+  ips: true
+  blacklist: true
+  strict: true
+debug: false
+doNotChangeThis: 1
