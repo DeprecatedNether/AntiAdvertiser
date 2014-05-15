@@ -4,6 +4,8 @@ onDetect:
 messages:
   player-message: '&4Advertising is prohibited. If this is a mistake, submit a /modreq!'
   moderator-message: '&c{player} tried to say the following: &4{message}'
+  kick-message: '&cKicked for advertising'
+  kick-broadcast: '&c{player} was kicked for advertising'
 whitelist:
   - 127.0.0.1
   - 0.0.0.0
