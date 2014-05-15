@@ -24,10 +24,12 @@ public class AdvertiseListener implements Listener {
             return;
         }
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
-            handleChat(e.getPlayer(), e.getMessage());
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            e.setCancelled(true);
+            if (!event.getCancelled()) {
+                handleChat(e.getPlayer(), e.getMessage());
+                e.setCancelled(true);
+            }
         }
     }
 
@@ -37,10 +39,12 @@ public class AdvertiseListener implements Listener {
             return;
         }
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
-            handleChat(e.getPlayer(), e.getMessage());
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.COMMAND);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            e.setCancelled(true);
+            if (!event.getCancelled()) {
+                handleChat(e.getPlayer(), e.getMessage());
+                e.setCancelled(true);
+            }
         }
     }
 
@@ -57,10 +61,12 @@ public class AdvertiseListener implements Listener {
             }
         }
         if (!AntiAdvertiser.safeChat(e.getPlayer(), lines.replace("|", ""))) {
-            handleChat(e.getPlayer(), "[SIGN] " + lines.substring(0, lines.length()-1));
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            e.setCancelled(true);
+            if (!event.getCancelled()) {
+                handleChat(e.getPlayer(), "[SIGN] " + lines.substring(0, lines.length()-1));
+                e.setCancelled(true);
+            }
         }
     }
 
@@ -77,10 +83,12 @@ public class AdvertiseListener implements Listener {
         // Process one page at a time as to not spam the mods' chat when detecting an advertisement in a long book and not fill up the logs.
         for (int pg = 1; pg <= book.getPageCount(); pg++) {
             if (!AntiAdvertiser.safeChat(e.getPlayer(), book.getPage(pg))) {
-                handleChat(e.getPlayer(), "[BOOK] " + book.getPage(pg).replace("\n", " "));
                 PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
                 Bukkit.getServer().getPluginManager().callEvent(event);
-                e.setCancelled(true);
+                if (!event.getCancelled()) {
+                    handleChat(e.getPlayer(), "[BOOK] " + book.getPage(pg).replace("\n", " "));
+                    e.setCancelled(true);
+                }
             }
         }
     }

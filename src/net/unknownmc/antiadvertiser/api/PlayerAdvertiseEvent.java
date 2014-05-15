@@ -27,11 +27,13 @@ public class PlayerAdvertiseEvent extends Event {
     private String message;
     private AdvertiseType type;
     private Player player;
+    private boolean cancelled;
 
     public PlayerAdvertiseEvent(Player player, String message, AdvertiseType type) {
         this.player = player;
         this.message = message;
         this.type = type;
+        this.cancelled = false;
     }
 
     public Player getPlayer() {
@@ -44,6 +46,14 @@ public class PlayerAdvertiseEvent extends Event {
 
     public AdvertiseType getType() {
         return type;
+    }
+
+    public boolean getCancelled() {
+        return this.cancelled;
+    }
+
+    public void setCancelled(boolean cancel) {
+        this.cancelled = cancel;
     }
 
     public HandlerList getHandlers() {
