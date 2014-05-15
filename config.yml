@@ -1,5 +1,6 @@
 onDetect:
   command: ''
+  action: WARN
 messages:
   player-message: '&4Advertising is prohibited. If this is a mistake, submit a /modreq!'
   moderator-message: '&c{player} tried to say the following: &4{message}'
