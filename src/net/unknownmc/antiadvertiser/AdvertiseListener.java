@@ -1,5 +1,7 @@
 package net.unknownmc.antiadvertiser;
 
+import net.unknownmc.antiadvertiser.api.AdvertiseType;
+import net.unknownmc.antiadvertiser.api.PlayerAdvertiseEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,6 +25,8 @@ public class AdvertiseListener implements Listener {
         }
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
             handleChat(e.getPlayer(), e.getMessage());
+            PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
+            Bukkit.getServer().getPluginManager().callEvent(event);
             e.setCancelled(true);
         }
     }
@@ -34,6 +38,8 @@ public class AdvertiseListener implements Listener {
         }
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
             handleChat(e.getPlayer(), e.getMessage());
+            PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.COMMAND);
+            Bukkit.getServer().getPluginManager().callEvent(event);
             e.setCancelled(true);
         }
     }
@@ -52,6 +58,8 @@ public class AdvertiseListener implements Listener {
         }
         if (!AntiAdvertiser.safeChat(e.getPlayer(), lines.replace("|", ""))) {
             handleChat(e.getPlayer(), "[SIGN] " + lines.substring(0, lines.length()-1));
+            PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);
+            Bukkit.getServer().getPluginManager().callEvent(event);
             e.setCancelled(true);
         }
     }
@@ -70,6 +78,8 @@ public class AdvertiseListener implements Listener {
         for (int pg = 1; pg <= book.getPageCount(); pg++) {
             if (!AntiAdvertiser.safeChat(e.getPlayer(), book.getPage(pg))) {
                 handleChat(e.getPlayer(), "[BOOK] " + book.getPage(pg).replace("\n", " "));
+                PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
+                Bukkit.getServer().getPluginManager().callEvent(event);
                 e.setCancelled(true);
             }
         }
