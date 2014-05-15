@@ -109,7 +109,7 @@ public class AntiAdvertiser extends JavaPlugin {
 
     public static boolean checkForAbsoluteWhitelist(String str) {
         for (String absolute : config.getStringList("absolute-whitelist")) {
-            if (str.contains(absolute)) {
+            if (str.contains(absolute.toLowerCase())) {
                 sendDebug("Message contained an absolute-whitelist string " + absolute);
                 return true;
             }
@@ -131,7 +131,7 @@ public class AntiAdvertiser extends JavaPlugin {
                 }
                 return false;
             }
-            if (str.contains(blacklist)) {
+            if (str.contains(blacklist.toLowerCase())) {
                 sendDebug("Message contained blacklisted phrase " + blacklist);
                 return true;
             }
