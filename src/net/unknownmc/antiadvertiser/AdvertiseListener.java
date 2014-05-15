@@ -108,6 +108,7 @@ public class AdvertiseListener implements Listener {
                 message = message.replace("\n", " | ");
                 break;
         }
+        AntiAdvertiser.log.info(e.getPlayer().getName() + " tried advertising with " + e.getType().toString().toLowerCase() + ": " + e.getMessage());
         try {
             String filePath = AntiAdvertiser.detectionsFile.getAbsolutePath();
             FileWriter fw = new FileWriter(filePath, true);
