@@ -18,11 +18,34 @@
 
 package net.unknownmc.antiadvertiser.api;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class PlayerAdvertiseEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
+    private String message;
+    private AdvertiseType type;
+    private Player player;
+
+    public PlayerAdvertiseEvent(Player player, String message, AdvertiseType type) {
+        this.player = player;
+        this.message = message;
+        this.type = type;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public AdvertiseType getType() {
+        return type;
+    }
+
     public HandlerList getHandlers() {
         return handlers;
     }
