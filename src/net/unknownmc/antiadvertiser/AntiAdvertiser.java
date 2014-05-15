@@ -45,13 +45,13 @@ public class AntiAdvertiser extends JavaPlugin {
 
     }
 
-    public static void logToFile(String player, String message) {
+    public static void logToFile(Player player, String message) {
         try {
             String filePath = detectionsFile.getAbsolutePath();
             FileWriter fw = new FileWriter(filePath, true);
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             Date date = new Date();
-            fw.write("[" + dateFormat.format(date) + "] <" + player + "> " + message + "\n");
+            fw.write("[" + dateFormat.format(date) + "] " + player.getName() + " (" + player.getUniqueId() + "): " + message + "\n");
             fw.close();
         }
         catch (IOException ioe) {

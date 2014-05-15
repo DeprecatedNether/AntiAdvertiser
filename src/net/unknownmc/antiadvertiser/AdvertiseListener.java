@@ -76,7 +76,7 @@ public class AdvertiseListener implements Listener {
     }
 
     public boolean handleChat(Player player, String message) {
-        AntiAdvertiser.logToFile(player.getName(), message);
+        AntiAdvertiser.logToFile(player, message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.hasPermission("antiadvertiser.notify")) {
                 String moderatorMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.moderator-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
