@@ -130,13 +130,20 @@ public class AntiAdvertiser extends JavaPlugin {
     public static boolean safeChat(Player player, String message) {
         message = message.toLowerCase();
         String whitelist = checkForWhitelist(message);
-        if (!whitelist.equals(message)) {
-            sendDebug("Message is partially whitelisted, changing " + message + " to " + whitelist);
-            message = whitelist;
-        }
         if (checkForAbsoluteWhitelist(message)) {
             sendDebug("Message is on absolute whitelist");
             return true;
+        }
+        if (!player.hasPermission("antiadvertiser.bypass.blacklist")) {
+            if (checkForBlacklist(message)) {
+                sendDebug("Message contains blacklisted message.");
+                return false;
+            }
+            sendDebug("Blacklist not found");
+        }
+        if (!whitelist.equals(message)) {
+            sendDebug("Message is partially whitelisted, changing " + message + " to " + whitelist);
+            message = whitelist;
         }
         if (!player.hasPermission("antiadvertiser.bypass.ip")) {
             if (checkForIp(message)) {
@@ -151,13 +158,6 @@ public class AntiAdvertiser extends JavaPlugin {
                 return false;
             }
             sendDebug("Domain not found");
-        }
-        if (!player.hasPermission("antiadvertiser.bypass.blacklist")) {
-            if (checkForBlacklist(message)) {
-                sendDebug("Message contains blacklisted message.");
-                return false;
-            }
-            sendDebug("Blacklist not found");
         }
 
         sendDebug("Message is good.");
