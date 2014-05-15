@@ -16,6 +16,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AdvertiseListener implements Listener {
 
     @EventHandler(priority=EventPriority.HIGH)
@@ -27,7 +33,6 @@ public class AdvertiseListener implements Listener {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.getCancelled()) {
-                handleChat(e.getPlayer(), e.getMessage());
                 e.setCancelled(true);
             }
         }
@@ -42,7 +47,6 @@ public class AdvertiseListener implements Listener {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.COMMAND);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.getCancelled()) {
-                handleChat(e.getPlayer(), e.getMessage());
                 e.setCancelled(true);
             }
         }
@@ -64,7 +68,6 @@ public class AdvertiseListener implements Listener {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.getCancelled()) {
-                handleChat(e.getPlayer(), "[SIGN] " + lines.substring(0, lines.length()-1));
                 e.setCancelled(true);
             }
         }
@@ -86,16 +89,39 @@ public class AdvertiseListener implements Listener {
                 PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
                 Bukkit.getServer().getPluginManager().callEvent(event);
                 if (!event.getCancelled()) {
-                    handleChat(e.getPlayer(), "[BOOK] " + book.getPage(pg).replace("\n", " "));
                     e.setCancelled(true);
                 }
             }
         }
     }
 
-    public boolean handleChat(Player player, String message) {
-        AntiAdvertiser.logToFile(player, message);
-        for (Player online : Bukkit.getOnlinePlayers()) {
+    @EventHandler
+    public void handleAdvertisers(PlayerAdvertiseEvent e) {
+        if (e.getCancelled()) {
+            return;
+        }
+        Player player = e.getPlayer();
+        String message = e.getMessage();
+        switch (e.getType()) {
+            case BOOK:
+                message = message.replace("\n", "  ");
+                break;
+            case SIGN:
+                message = message.replace("\n", " | ");
+                break;
+        }
+        try {
+            String filePath = AntiAdvertiser.detectionsFile.getAbsolutePath();
+            FileWriter fw = new FileWriter(filePath, true);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            Date date = new Date();
+            fw.write("[" + dateFormat.format(date) + "] " + player.getName() + " (" + player.getUniqueId() + ") [" + e.getType().toString() + "]: " + message + "\n");
+            fw.close();
+        }
+        catch (IOException ioe) {
+            System.err.println("IOException: " + ioe.getMessage());
+        }
+        for (Player online : Bukkit.getServer().getOnlinePlayers()) {
             if (online.hasPermission("antiadvertiser.notify")) {
                 String moderatorMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.moderator-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
                 online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + moderatorMessage);
@@ -118,6 +144,5 @@ public class AdvertiseListener implements Listener {
         if (!AntiAdvertiser.config.getString("onDetect.command").equals("")) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatColor.translateAlternateColorCodes("&".charAt(0), AntiAdvertiser.config.getString("onDetect.command")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message));
         }
-        return true;
     }
 }
