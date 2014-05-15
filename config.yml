@@ -12,6 +12,10 @@ whitelist:
   - bukkit.org
   - minecraft.net
   - minecraftwiki.net
+absolute-whitelist: []
+blacklist:
+  - SomeOtherCraft
+  - Join my server
 checks:
   domains: true
   ips: true
