@@ -14,5 +14,10 @@ checks:
   ips: true
   blacklist: true
   strict: true
+monitor:
+  chat: true
+  commands: true
+  signs: true
+  books: true
 debug: false
 doNotChangeThis: 1
