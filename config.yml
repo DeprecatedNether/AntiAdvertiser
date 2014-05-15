@@ -14,7 +14,6 @@ checks:
   domains: true
   ips: true
   blacklist: true
-  strict: true
 monitor:
   chat: true
   commands: true
