@@ -47,11 +47,11 @@ public class AdvertiseListener implements Listener {
         String lines = "";
         for (String line : e.getLines()) {
             if (!line.equals("")) {
-                lines = lines + line;
+                lines = lines + line + "|";
             }
         }
-        if (!AntiAdvertiser.safeChat(e.getPlayer(), lines)) {
-            handleChat(e.getPlayer(), "[SIGN] " + lines);
+        if (!AntiAdvertiser.safeChat(e.getPlayer(), lines.replace("|", ""))) {
+            handleChat(e.getPlayer(), "[SIGN] " + lines.substring(0, lines.length()-1));
             e.setCancelled(true);
         }
     }
@@ -69,7 +69,7 @@ public class AdvertiseListener implements Listener {
         // Process one page at a time as to not spam the mods' chat when detecting an advertisement in a long book and not fill up the logs.
         for (int pg = 1; pg <= book.getPageCount(); pg++) {
             if (!AntiAdvertiser.safeChat(e.getPlayer(), book.getPage(pg))) {
-                handleChat(e.getPlayer(), "[BOOK] " + book.getPage(pg));
+                handleChat(e.getPlayer(), "[BOOK] " + book.getPage(pg).replace("\n", " "));
                 e.setCancelled(true);
             }
         }
