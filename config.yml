@@ -2,7 +2,7 @@ onDetect:
   command: ''
   action: WARN
 messages:
-  player-message: '&4Advertising is prohibited. If this is a mistake, submit a /modreq!'
+  player-message: '&4Advertising is prohibited.'
   moderator-message: '&c{player} tried to say the following: &4{message}'
   kick-message: '&cKicked for advertising'
   kick-broadcast: '&c{player} was kicked for advertising'
