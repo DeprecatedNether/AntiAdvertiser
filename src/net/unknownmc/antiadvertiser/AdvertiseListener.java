@@ -91,8 +91,10 @@ public class AdvertiseListener implements Listener {
             String kickMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.kick-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
             player.kickPlayer(ChatColor.GOLD + "[AntiAdvertiser]\n" + kickMessage);
             String kickBcast = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.kick-broadcast")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + kickBcast);
+            if (!kickBcast.equals("")) {
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + kickBcast);
+                }
             }
         }
         if (!AntiAdvertiser.config.getString("onDetect.command").equals("")) {
