@@ -26,4 +26,4 @@ monitor:
   signs: true
   books: true
 debug: false
-doNotChangeThis: 1
+config-version: 1
