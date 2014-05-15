@@ -25,44 +25,20 @@ public class AntiAdvertiser extends JavaPlugin {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new AdvertiseListener(), this);
 
-        configFile = new File(getDataFolder(), "config.yml");
         detectionsFile = new File(getDataFolder(), "detections.txt");
         try {
-            generateConfig();
             if (!detectionsFile.exists()) {
                 detectionsFile.createNewFile();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        config = new YamlConfiguration();
-        try {
-            config.load(configFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        config = getConfig();
+        config.options().copyDefaults(true).copyHeader(true);
         if ((!config.getString("onDetect.action").equalsIgnoreCase("WARN")) && (config.getString("onDetect.action").equalsIgnoreCase("KICK"))) {
             getLogger().info("Value of onDetect.action is either empty of invalid (" + config.getString("onDetect.action") + "), defaulting to 'WARN'.");
             config.set("onDetect.action", "WARN");
             saveConfig();
-        }
-        if ((!config.isInt("doNotChangeThis")) || (config.getInt("doNotChangeThis") != 1)) {
-            File oldConfig = new File(getDataFolder(), "config.old.yml");
-            configFile.renameTo(oldConfig);
-            try {
-                generateConfig();
-                if (!detectionsFile.exists()) {
-                    detectionsFile.createNewFile();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            config = new YamlConfiguration();
-            try {
-                config.load(configFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -81,29 +57,6 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         catch (IOException ioe) {
             System.err.println("IOException: " + ioe.getMessage());
-        }
-    }
-
-    private void generateConfig() throws Exception {
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-            copy(getResource("config.yml"), configFile);
-        }
-    }
-
-    private void copy(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0)
-            {
-                out.write(buf, 0, len);
-            }
-            out.close();
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
