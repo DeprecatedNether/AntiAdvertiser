@@ -31,44 +31,24 @@ public class AdvertiseListener implements Listener {
         AntiAdvertiser.logToFile(player.getName(), message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.hasPermission("antiadvertiser.notify")) {
-                String moderatorMessage = AntiAdvertiser.config.getString("messages.moderator-message");
-                moderatorMessage = ChatColor.translateAlternateColorCodes("&".charAt(0), moderatorMessage);
-                moderatorMessage = moderatorMessage.replace("{player}", player.getName());
-                moderatorMessage = moderatorMessage.replace("{display}", player.getDisplayName());
-                moderatorMessage = moderatorMessage.replace("{message}", message);
+                String moderatorMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.moderator-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
                 online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + moderatorMessage);
             }
         }
+
         if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("WARN")) {
-            String playerMessage = AntiAdvertiser.config.getString("messages.player-message");
-            playerMessage = ChatColor.translateAlternateColorCodes("&".charAt(0), playerMessage);
-            playerMessage = playerMessage.replace("{player}", player.getName());
-            playerMessage = playerMessage.replace("{display}", player.getDisplayName());
-            playerMessage = playerMessage.replace("{message}", message);
+            String playerMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.player-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
             player.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + playerMessage);
-        }
-        else if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("KICK")) {
-            String kickMessage = AntiAdvertiser.config.getString("messages.kick-message");
-            kickMessage = ChatColor.translateAlternateColorCodes("&".charAt(0), kickMessage);
-            kickMessage = kickMessage.replace("{player}", player.getName());
-            kickMessage = kickMessage.replace("{display}", player.getDisplayName());
-            kickMessage = kickMessage.replace("{message}", message);
+        } else if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("KICK")) {
+            String kickMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.kick-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
             player.kickPlayer(ChatColor.GOLD + "[AntiAdvertiser]\n" + kickMessage);
-            String kickBcast = AntiAdvertiser.config.getString("messages.kick-broadcast");
-            kickBcast = kickBcast.replace("{player}", player.getName());
-            kickBcast = kickBcast.replace("{display}", player.getDisplayName());
-            kickBcast = kickBcast.replace("{message}", message);
+            String kickBcast = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.kick-broadcast")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + kickBcast);
             }
         }
-        if ((!AntiAdvertiser.config.getString("onDetect.command").equals("")) && (AntiAdvertiser.config.getString("onDetect.command") != null)) {
-            String cmd = AntiAdvertiser.config.getString("onDetect.command");
-            cmd = ChatColor.translateAlternateColorCodes("&".charAt(0), cmd);
-            cmd = cmd.replace("{player}", player.getName());
-            cmd = cmd.replace("{display}", player.getDisplayName());
-            cmd = cmd.replace("{message}", message);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        if (!AntiAdvertiser.config.getString("onDetect.command").equals("")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatColor.translateAlternateColorCodes("&".charAt(0), AntiAdvertiser.config.getString("onDetect.command")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message));
         }
         return true;
     }
