@@ -9,12 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class AdvertiseListener
-        implements Listener
-{
+public class AdvertiseListener implements Listener {
+
     @EventHandler(priority=EventPriority.HIGH)
-    public void onPlayerChat(AsyncPlayerChatEvent e)
-    {
+    public void onPlayerChat(AsyncPlayerChatEvent e) {
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
             handleChat(e.getPlayer(), e.getMessage());
             e.setCancelled(true);
@@ -29,10 +27,8 @@ public class AdvertiseListener
         }
     }
 
-    public boolean handleChat(Player player, String message)
-    {
+    public boolean handleChat(Player player, String message) {
         AntiAdvertiser.logToFile(player.getName(), message);
-
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.hasPermission("antiadvertiser.notify")) {
                 String moderatorMessage = AntiAdvertiser.config.getString("messages.moderator-message");
