@@ -24,7 +24,7 @@ public class AntiAdvertiser extends JavaPlugin {
 
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new AdvertiseListener(), this);
-
+        getDataFolder().mkdirs();
         detectionsFile = new File(getDataFolder(), "detections.txt");
         try {
             if (!detectionsFile.exists()) {
