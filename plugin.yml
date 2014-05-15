@@ -1,5 +1,5 @@
 name: AntiAdvertiser
-version: 4.3.1
+version: 1.0
 main: net.unknownmc.antiadvertiser.AntiAdvertiser
 permissions:
   antiadvertiser.bypass:
