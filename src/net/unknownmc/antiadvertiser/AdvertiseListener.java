@@ -60,11 +60,9 @@ public class AdvertiseListener implements Listener {
         // Combine it all into one string. No spaces, so "unknownmc\n.net" becomes "unknownmc.net"
         String lines = "";
         for (String line : e.getLines()) {
-            if (!line.equals("")) {
-                lines = lines + line + "|";
-            }
+            lines = lines + line + "\n";
         }
-        if (!AntiAdvertiser.safeChat(e.getPlayer(), lines.replace("|", ""))) {
+        if (!AntiAdvertiser.safeChat(e.getPlayer(), lines)) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.getCancelled()) {
