@@ -122,11 +122,11 @@ public class AntiAdvertiser extends JavaPlugin {
             return false;
         }
         for (String blacklist : config.getStringList("blacklist")) {
-            if (str.startsWith("regex:")) {
-                Pattern p = Pattern.compile(str.substring(7));
+            if (blacklist.startsWith("regex:")) {
+                Pattern p = Pattern.compile(blacklist.substring(7));
                 Matcher m = p.matcher(str);
                 if (m.find()) {
-                    sendDebug("Message contained blacklisted Regular Expression " + str);
+                    sendDebug("Message contained blacklisted Regular Expression " + blacklist);
                     return true;
                 }
                 return false;
@@ -135,6 +135,7 @@ public class AntiAdvertiser extends JavaPlugin {
                 sendDebug("Message contained blacklisted phrase " + blacklist);
                 return true;
             }
+            sendDebug(str + " does not contain " + blacklist);
         }
         return false;
     }
