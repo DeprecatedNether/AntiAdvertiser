@@ -61,7 +61,7 @@ public class AntiAdvertiser extends JavaPlugin {
     }
 
     public static boolean checkForIp(String str) {
-        if (config.getBoolean("ignore.ips")) {
+        if (!config.getBoolean("checks.ips")) {
             return false;
         }
         String ipPattern = "([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})";
@@ -76,7 +76,7 @@ public class AntiAdvertiser extends JavaPlugin {
     }
 
     public static boolean checkForDomain(String str) {
-        if (config.getBoolean("ignore.domains")) {
+        if (!config.getBoolean("checks.domains")) {
             return false;
         }
         List<String> domainPatterns = new ArrayList();
@@ -118,6 +118,9 @@ public class AntiAdvertiser extends JavaPlugin {
     }
 
     public static boolean checkForBlacklist(String str) {
+        if (!config.getBoolean("checks.blacklist")) {
+            return false;
+        }
         for (String blacklist : config.getStringList("blacklist")) {
             if (str.startsWith("regex:")) {
                 Pattern p = Pattern.compile(str.substring(7));
