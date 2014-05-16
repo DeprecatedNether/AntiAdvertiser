@@ -26,4 +26,5 @@ monitor:
   signs: true
   books: true
 debug: false
+auto-update: true
 config-version: 1

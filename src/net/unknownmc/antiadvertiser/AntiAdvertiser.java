@@ -74,6 +74,13 @@ public class AntiAdvertiser extends JavaPlugin {
         } catch (Exception e) {
             log.warning("Failed to start Metrics!");
         }
+        if (config.getBoolean("auto-update")) {
+            Updater updater = new Updater(this, 45120, this.getFile(), Updater.UpdateType.DEFAULT, false);
+            if (updater.getResult() == Updater.UpdateResult.SUCCESS) {
+                log.info("AntiAdvertiser has been updated to the latest version!");
+            }
+            sendDebug("Update status: " + updater.getResult().toString().toLowerCase());
+        }
     }
 
     public void onDisable() {
