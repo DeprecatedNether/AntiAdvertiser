@@ -169,7 +169,7 @@ public class AntiAdvertiser extends JavaPlugin {
                     return true;
                 }
             }
-            if (str.contains(absolute.toLowerCase())) {
+            else if (str.contains(absolute.toLowerCase())) {
                 sendDebug("Message contained an absolute-whitelist string " + absolute);
                 return true;
             }
@@ -195,7 +195,7 @@ public class AntiAdvertiser extends JavaPlugin {
                     return true;
                 }
             }
-            if (str.contains(blacklist.toLowerCase())) {
+            else if (str.contains(blacklist.toLowerCase())) {
                 sendDebug("Message contained blacklisted phrase " + blacklist);
                 return true;
             }
