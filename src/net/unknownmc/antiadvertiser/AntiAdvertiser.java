@@ -176,7 +176,7 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         for (String blacklist : config.getStringList("blacklist")) {
             if (blacklist.startsWith("regex:")) {
-                Pattern p = Pattern.compile(blacklist.substring(7));
+                Pattern p = Pattern.compile(blacklist.substring(6));
                 Matcher m = p.matcher(str);
                 if (m.find()) {
                     sendDebug("Message contained blacklisted Regular Expression " + blacklist);
