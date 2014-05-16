@@ -157,6 +157,14 @@ public class AntiAdvertiser extends JavaPlugin {
      */
     public static boolean checkForAbsoluteWhitelist(String str) {
         for (String absolute : config.getStringList("absolute-whitelist")) {
+            if (absolute.startsWith("regex:")) {
+                Pattern p = Pattern.compile(absolute.substring(6));
+                Matcher m = p.matcher(str);
+                if (m.find()) {
+                    sendDebug("Message contained absolute-whitelisted regex " + absolute);
+                    return true;
+                }
+            }
             if (str.contains(absolute.toLowerCase())) {
                 sendDebug("Message contained an absolute-whitelist string " + absolute);
                 return true;
