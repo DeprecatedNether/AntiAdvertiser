@@ -19,10 +19,11 @@
 package net.unknownmc.antiadvertiser.api;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PlayerAdvertiseEvent extends Event {
+public class PlayerAdvertiseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private String message;
     private AdvertiseType type;
@@ -48,7 +49,7 @@ public class PlayerAdvertiseEvent extends Event {
         return type;
     }
 
-    public boolean getCancelled() {
+    public boolean isCancelled() {
         return this.cancelled;
     }
 

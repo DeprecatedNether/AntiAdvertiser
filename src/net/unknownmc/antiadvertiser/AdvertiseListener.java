@@ -32,7 +32,7 @@ public class AdvertiseListener implements Listener {
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            if (!event.getCancelled()) {
+            if (!event.isCancelled()) {
                 e.setCancelled(true);
             }
         }
@@ -46,7 +46,7 @@ public class AdvertiseListener implements Listener {
         if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.COMMAND);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            if (!event.getCancelled()) {
+            if (!event.isCancelled()) {
                 e.setCancelled(true);
             }
         }
@@ -65,7 +65,7 @@ public class AdvertiseListener implements Listener {
         if (!AntiAdvertiser.safeChat(e.getPlayer(), lines)) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);
             Bukkit.getServer().getPluginManager().callEvent(event);
-            if (!event.getCancelled()) {
+            if (!event.isCancelled()) {
                 e.setCancelled(true);
             }
         }
@@ -86,7 +86,7 @@ public class AdvertiseListener implements Listener {
             if (!AntiAdvertiser.safeChat(e.getPlayer(), book.getPage(pg))) {
                 PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
                 Bukkit.getServer().getPluginManager().callEvent(event);
-                if (!event.getCancelled()) {
+                if (!event.isCancelled()) {
                     e.setCancelled(true);
                 }
             }
@@ -95,7 +95,7 @@ public class AdvertiseListener implements Listener {
 
     @EventHandler
     public void handleAdvertisers(PlayerAdvertiseEvent e) {
-        if (e.getCancelled()) {
+        if (e.isCancelled()) {
             return;
         }
         Player player = e.getPlayer();
