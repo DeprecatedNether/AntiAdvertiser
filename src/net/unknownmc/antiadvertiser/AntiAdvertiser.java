@@ -1,6 +1,5 @@
 package net.unknownmc.antiadvertiser;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -207,7 +206,7 @@ public class AntiAdvertiser extends JavaPlugin {
 
     public static void sendDebug(String message) {
         if (config.getBoolean("debug")) {
-            Bukkit.getConsoleSender().sendMessage("[Debug] " + message);
+            log.info("[Debug] " + message);
         }
     }
 }
