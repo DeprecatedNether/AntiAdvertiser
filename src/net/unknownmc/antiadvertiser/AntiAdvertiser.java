@@ -182,7 +182,6 @@ public class AntiAdvertiser extends JavaPlugin {
                     sendDebug("Message contained blacklisted Regular Expression " + blacklist);
                     return true;
                 }
-                return false;
             }
             if (str.contains(blacklist.toLowerCase())) {
                 sendDebug("Message contained blacklisted phrase " + blacklist);
