@@ -110,7 +110,7 @@ public class AntiAdvertiser extends JavaPlugin {
         domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ")\\/)"); // www.unknownmc.net/
         domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ") )"); // mc.unknownmc.net rocks
         domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + "))$"); // "Join mc.unknownmc.net"
-        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ")(\\!|\\.|\\?))"); // Join mc.unknownmc.net!
+        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ")(\\!|\\.|\\?|,|:|;))"); // Join mc.unknownmc.net!
         for (String regex : domainPatterns) {
             Pattern r = Pattern.compile(regex);
             Matcher m = r.matcher(str);
