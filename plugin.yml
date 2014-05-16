@@ -3,6 +3,16 @@ version: 1.0
 main: net.unknownmc.antiadvertiser.AntiAdvertiser
 permissions:
   antiadvertiser.bypass:
+    children:
+      antiadvertiser.bypass.ip: true
+      antiadvertiser.bypass.blacklist: true
+      antiadvertiser.bypass.domain: true
     default: op
   antiadvertiser.notify:
+    default: op
+  antiadvertiser.bypass.ip:
+    default: op
+  antiadvertiser.bypass.domain:
+    default: op
+  antiadvertiser.bypass.blacklist:
     default: op
