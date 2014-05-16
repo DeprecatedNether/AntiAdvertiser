@@ -53,6 +53,7 @@ public class PlayerAdvertiseEvent extends Event implements Cancellable {
         return this.cancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
     }
