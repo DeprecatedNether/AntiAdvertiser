@@ -86,6 +86,11 @@ public class AntiAdvertiser extends JavaPlugin {
 
     }
 
+    /**
+     * Checks if the message contains an IP address.
+     * @param str The message to check
+     * @return True if IP found, false if not
+     */
     public static boolean checkForIp(String str) {
         if (!config.getBoolean("checks.ips")) {
             return false;
@@ -101,6 +106,11 @@ public class AntiAdvertiser extends JavaPlugin {
         return false;
     }
 
+    /**
+     * Checks if the message contains a domain name.
+     * @param str The message to check
+     * @return True if domain name found, false if not
+     */
     public static boolean checkForDomain(String str) {
         if (!config.getBoolean("checks.domains")) {
             return false;
@@ -123,6 +133,14 @@ public class AntiAdvertiser extends JavaPlugin {
         return false;
     }
 
+    /**
+     * Removes all whitelisted words from the message.
+     * For example, "bukkit.org" is whitelisted and str is "go to dev.bukkit.org". This will return "go to dev." which won't be detected as advertising.
+     * If str was "go to mc.someminecraftserver.com.bukkit.org", it would return "go to mc.someminecraftserver.com." which would be detected as advertising.
+     * This way, we prevent whitelisted domains from being picked up as an ad but not let advertisers bypass the checks with this.
+     * @param str The message to check
+     * @return The stripped message to run through all other checks.
+     */
     public static String checkForWhitelist(String str) {
         String finish = str;
         for (String whitelist : config.getStringList("whitelist")) {
@@ -132,6 +150,11 @@ public class AntiAdvertiser extends JavaPlugin {
         return finish;
     }
 
+    /**
+     * Checks if the message is on the absolute whitelist and no further checks should be run.
+     * @param str The message to check
+     * @return True if on absolute whitelist, false if not
+     */
     public static boolean checkForAbsoluteWhitelist(String str) {
         for (String absolute : config.getStringList("absolute-whitelist")) {
             if (str.contains(absolute.toLowerCase())) {
@@ -142,6 +165,11 @@ public class AntiAdvertiser extends JavaPlugin {
         return false;
     }
 
+    /**
+     * Checks if the message is on the blacklist. Blacklist is a custom regex/contains check defined by the administrator and if this returns true, the message should be treated as advertising.
+     * @param str The message to check
+     * @return True if message contains a blacklisted word (or matches a blacklist regex), false if all good.
+     */
     public static boolean checkForBlacklist(String str) {
         if (!config.getBoolean("checks.blacklist")) {
             return false;
@@ -165,6 +193,12 @@ public class AntiAdvertiser extends JavaPlugin {
         return false;
     }
 
+    /**
+     * Checks if the message is "safe", ie. doesn't contain non-whitelisted advertising.
+     * @param player The player who sent the message (or placed the sign or dropped the book... you get the point)
+     * @param message The message sent by the player.
+     * @return True if the message is clear, false if it contains advertising.
+     */
     public static boolean safeChat(Player player, String message) {
         message = message.toLowerCase();
         message = message.replace("\n", "");

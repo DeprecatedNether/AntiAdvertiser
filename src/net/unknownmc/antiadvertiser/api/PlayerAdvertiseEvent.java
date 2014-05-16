@@ -23,6 +23,9 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * Called when a player attempts to advertise but their message was caught by AntiAdvertiser.
+ */
 public class PlayerAdvertiseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private String message;
@@ -30,6 +33,12 @@ public class PlayerAdvertiseEvent extends Event implements Cancellable {
     private Player player;
     private boolean cancelled;
 
+    /**
+     * Construct the event.
+     * @param player The player advertising.
+     * @param message The message that was detected as advertising.
+     * @param type What they used to advertise.
+     */
     public PlayerAdvertiseEvent(Player player, String message, AdvertiseType type) {
         this.player = player;
         this.message = message;
@@ -37,22 +46,43 @@ public class PlayerAdvertiseEvent extends Event implements Cancellable {
         this.cancelled = false;
     }
 
+    /**
+     * Gets the player that advertised.
+     * @return The player
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Gets the message that was detected as advertising. With books, this is only the page that was detected as having an ad.
+     * @return
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Gets the method used for advertising (book, chat, ...).
+     * @return The method (enum from net.unknownmc.api.AdvertiseType)
+     */
     public AdvertiseType getType() {
         return type;
     }
 
+    /**
+     * Whether the event was cancelled by a plugin.
+     * @return True if cancelled, false if not.
+     */
     public boolean isCancelled() {
         return this.cancelled;
     }
 
+    /**
+     * Decide whether the event should be cancelled or not.
+     * If the event is set to cancel, the message will be shown to everybody as it normally would if it didn't contain an ad, the message wouldn't be logged and the player wouldn't be warned/kicked, the custom command wouldn't run.
+     * @param cancel Whether to cancel the event (true) or not (false).
+     */
     @Override
     public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
