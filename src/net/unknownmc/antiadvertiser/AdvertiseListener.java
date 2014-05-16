@@ -129,14 +129,14 @@ public class AdvertiseListener implements Listener {
 
         if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("WARN")) {
             String playerMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.player-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
-            player.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + playerMessage);
+            player.sendMessage(ChatColor.GREEN + playerMessage);
         } else if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("KICK")) {
             String kickMessage = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.kick-message")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
-            player.kickPlayer(ChatColor.GOLD + "[AntiAdvertiser]\n" + kickMessage);
+            player.kickPlayer(ChatColor.GOLD + kickMessage);
             String kickBcast = ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.kick-broadcast")).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
             if (!kickBcast.equals("")) {
                 for (Player online : Bukkit.getOnlinePlayers()) {
-                    online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + kickBcast);
+                    online.sendMessage(ChatColor.GREEN + kickBcast);
                 }
             }
         }
