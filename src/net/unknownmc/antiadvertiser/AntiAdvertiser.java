@@ -144,7 +144,11 @@ public class AntiAdvertiser extends JavaPlugin {
     public static String checkForWhitelist(String str) {
         String finish = str;
         for (String whitelist : config.getStringList("whitelist")) {
-            finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase(), "");
+            if (whitelist.startsWith("regex:")) {
+                finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase().substring(6), ""); // Replace regex
+            } else {
+                finish = finish.toLowerCase().replace(whitelist.toLowerCase(), ""); // Don't parse regex
+            }
         }
         sendDebug("Checked for whitelist, " + finish);
         return finish;
