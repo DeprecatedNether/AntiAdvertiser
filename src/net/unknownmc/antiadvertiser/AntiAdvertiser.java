@@ -168,7 +168,6 @@ public class AntiAdvertiser extends JavaPlugin {
     public static boolean safeChat(Player player, String message) {
         message = message.toLowerCase();
         message = message.replace("\n", "");
-        String whitelist = checkForWhitelist(message);
         if (checkForAbsoluteWhitelist(message)) {
             sendDebug("Message is on absolute whitelist");
             return true;
@@ -180,6 +179,7 @@ public class AntiAdvertiser extends JavaPlugin {
             }
             sendDebug("Blacklist not found");
         }
+        String whitelist = checkForWhitelist(message);
         if (!whitelist.equals(message)) {
             sendDebug("Message is partially whitelisted, changing " + message + " to " + whitelist);
             message = whitelist;
