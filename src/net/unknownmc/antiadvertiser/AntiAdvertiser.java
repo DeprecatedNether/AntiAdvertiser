@@ -125,9 +125,8 @@ public class AntiAdvertiser extends JavaPlugin {
 
     public static String checkForWhitelist(String str) {
         String finish = str;
-        for (Iterator localIterator = config.getList("whitelist").iterator(); localIterator.hasNext(); ) { Object l = localIterator.next();
-            Object needle = l;
-            finish = finish.toLowerCase().replaceAll(needle.toString().toLowerCase(), "");
+        for (String whitelist : config.getStringList("whitelist")) {
+            finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase(), "");
         }
         sendDebug("Checked for whitelist, " + finish);
         return finish;
