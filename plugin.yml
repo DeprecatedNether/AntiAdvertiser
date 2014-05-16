@@ -1,6 +1,7 @@
 name: AntiAdvertiser
 version: 1.0
 main: net.unknownmc.antiadvertiser.AntiAdvertiser
+description: AntiAdvertiser makes sure advertisers can't steal your hard-earned players.
 permissions:
   antiadvertiser.bypass:
     children:
