@@ -149,7 +149,7 @@ public class AntiAdvertiser extends JavaPlugin {
         String finish = str;
         for (String whitelist : config.getStringList("whitelist")) {
             if (whitelist.startsWith("regex:")) {
-                finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase().substring(6), ""); // Replace regex
+                finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase().substring(6).replace("{tld}", TLDregex.toLowerCase()), ""); // Replace regex
             } else {
                 finish = finish.toLowerCase().replace(whitelist.toLowerCase(), ""); // Don't parse regex
             }
@@ -166,7 +166,7 @@ public class AntiAdvertiser extends JavaPlugin {
     public static boolean checkForAbsoluteWhitelist(String str) {
         for (String absolute : config.getStringList("absolute-whitelist")) {
             if (absolute.startsWith("regex:")) {
-                Pattern p = Pattern.compile(absolute.substring(6));
+                Pattern p = Pattern.compile(absolute.substring(6).replace("{tld}", TLDregex.toLowerCase()));
                 Matcher m = p.matcher(str);
                 if (m.find()) {
                     sendDebug("Message contained absolute-whitelisted regex " + absolute);
@@ -192,7 +192,7 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         for (String blacklist : config.getStringList("blacklist")) {
             if (blacklist.startsWith("regex:")) {
-                Pattern p = Pattern.compile(blacklist.substring(6));
+                Pattern p = Pattern.compile(blacklist.substring(6).replace("{tld}", TLDregex.toLowerCase()));
                 Matcher m = p.matcher(str);
                 if (m.find()) {
                     sendDebug("Message contained blacklisted Regular Expression " + blacklist);
