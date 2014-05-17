@@ -126,7 +126,7 @@ public class AntiAdvertiser extends JavaPlugin {
         if (!config.getBoolean("checks.domains")) {
             return false;
         }
-        String domainPattern = "([a-z0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")(?![a-z0-9])";
+        String domainPattern = "([a-z-0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")(?![a-z0-9])";
         Pattern r = Pattern.compile(domainPattern);
         Matcher m = r.matcher(str);
         if (m.find()) {
