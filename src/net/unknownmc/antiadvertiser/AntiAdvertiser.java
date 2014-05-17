@@ -127,11 +127,8 @@ public class AntiAdvertiser extends JavaPlugin {
             return false;
         }
         List<String> domainPatterns = new ArrayList();
-        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + "):[0-9]{2,5})"); // mc.unknownmc.net:25565
-        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ")\\/)"); // www.unknownmc.net/
-        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ") )"); // mc.unknownmc.net rocks
-        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + "))$"); // "Join mc.unknownmc.net"
-        domainPatterns.add("(?i)([a-zA-Z0-9]{1,50}\\.(" + TLDregex + ")(\\!|\\.|\\?|,|:|;))"); // Join mc.unknownmc.net!
+        domainPatterns.add("([a-z0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")(:|\\/| |!|\\.|\\?|,|;|~)"); // Catches domains in the middle of a message
+        domainPatterns.add("([a-z0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")$"); // www.unknownmc.net/
         for (String regex : domainPatterns) {
             Pattern r = Pattern.compile(regex);
             Matcher m = r.matcher(str);
