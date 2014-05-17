@@ -26,4 +26,5 @@ monitor:
   signs: true
   books: true
 debug: false
+stealth-mode: false
 config-version: 1
