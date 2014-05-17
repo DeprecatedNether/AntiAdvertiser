@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 
 public class AdvertiseListener implements Listener {
 
@@ -51,7 +52,17 @@ public class AdvertiseListener implements Listener {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                e.setCancelled(true);
+                if (AntiAdvertiser.config.getBoolean("stealth-mode")) {
+                    Iterator<Player> it = e.getRecipients().iterator();
+                    while (it.hasNext()) {
+                        Player next = it.next();
+                        if (!next.equals(e.getPlayer())) {
+                            it.remove();
+                        }
+                    }
+                } else {
+                    e.setCancelled(true);
+                }
             }
         }
     }
