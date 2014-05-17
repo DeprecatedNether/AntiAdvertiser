@@ -126,16 +126,12 @@ public class AntiAdvertiser extends JavaPlugin {
         if (!config.getBoolean("checks.domains")) {
             return false;
         }
-        List<String> domainPatterns = new ArrayList();
-        domainPatterns.add("([a-z0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")(:|\\/| |!|\\.|\\?|,|;|~)"); // Catches domains in the middle of a message
-        domainPatterns.add("([a-z0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")$"); // www.unknownmc.net/
-        for (String regex : domainPatterns) {
-            Pattern r = Pattern.compile(regex);
-            Matcher m = r.matcher(str);
-            if (m.find()) {
-                sendDebug("The received message contained a website. Matched regex '" + regex + "'");
-                return true;
-            }
+        String domainPattern = "([a-z0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")(?![a-z0-9])";
+        Pattern r = Pattern.compile(domainPattern);
+        Matcher m = r.matcher(str);
+        if (m.find()) {
+            sendDebug("The received message contained a website. Matched regex '" + domainPattern + "'");
+            return true;
         }
         sendDebug("The received message did NOT contain a website.");
         return false;
