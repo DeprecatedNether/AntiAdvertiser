@@ -6,6 +6,7 @@ messages:
   moderator-message: '&c{player} tried to say the following: &4{message}'
   kick-message: '&cKicked for advertising'
   kick-broadcast: '&c{player} was kicked for advertising'
+  stealth-mode-command: '&cAn internal error occurred while attempting to perform this command.'
 whitelist:
   - 127.0.0.1
   - 0.0.0.0
