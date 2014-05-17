@@ -76,6 +76,9 @@ public class AdvertiseListener implements Listener {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.COMMAND);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
+                if (AntiAdvertiser.config.getBoolean("stealth-mode")) {
+                    e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', AntiAdvertiser.config.getString("messages.stealth-mode-command")).replace("{player}", e.getPlayer().getName()).replace("{display}", e.getPlayer().getDisplayName()).replace("{message}", e.getMessage()));
+                }
                 e.setCancelled(true);
             }
         }
