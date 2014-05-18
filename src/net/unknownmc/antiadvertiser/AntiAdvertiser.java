@@ -18,6 +18,7 @@
 
 package net.unknownmc.antiadvertiser;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -253,5 +254,16 @@ public class AntiAdvertiser extends JavaPlugin {
         if (config.getBoolean("debug")) {
             log.info("[Debug] " + message);
         }
+    }
+
+    /**
+     * Colours the string and turns variables into what they represent.
+     * @param string The string to prepare
+     * @param player The instance of Player
+     * @param message The message sent by the player.
+     * @return The prepared string
+     */
+    public static String prepareString(String string, Player player, String message) {
+        return ChatColor.translateAlternateColorCodes('&', string).replace("{player}", player.getName()).replace("{display}", player.getDisplayName()).replace("{message}", message);
     }
 }
