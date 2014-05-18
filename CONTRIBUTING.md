@@ -26,7 +26,7 @@ To report an issue, use our [issue tracker](https://github.com/MrEinStain/AntiAd
 (Any extra information here)
 ```
 
-An example of a good issue report with the title "IPs not blocked on signs":
+An example of a good (although invalid, since the plugin is just misconfigured in the config.yml) issue report with the title "IPs not blocked on signs":
 
 > **Version of AntiAdvertiser:** 1.0
 >
