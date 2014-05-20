@@ -52,4 +52,8 @@ Just like with bug reports, use the [issue tracker](https://github.com/MrEinStai
 
 Forking and making a Pull Request
 ---------------------------------
-Coming soon
+If you would like to and have the know-how, you may contribute by making a pull request to fix a bug or implement a feature.
+
+To fork the repository, click the "Fork" button in the top right corner. This will create a copy of AntiAdvertiser in your GitHub account. Then import the newly created fork to your IDE of choice, make desired changes, commit and push them.
+
+To make the pull request, navigate to https://github.com/**replace this with your GitHub username**/AntiAdvertiser/compare/, select the commits to include in the PR and click "Create Pull Request". This will notify me and allow me to accept your code into the master branch, ask for clarification or deny the PR.
