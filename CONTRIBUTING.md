@@ -56,4 +56,4 @@ If you would like to and have the know-how, you may contribute by making a pull 
 
 To fork the repository, click the "Fork" button in the top right corner. This will create a copy of AntiAdvertiser in your GitHub account. Then import the newly created fork to your IDE of choice, make desired changes, commit and push them.
 
-To make the pull request, navigate to https://github.com/**replace this with your GitHub username**/AntiAdvertiser/compare/, select the commits to include in the PR and click "Create Pull Request". This will notify me and allow me to accept your code into the master branch, ask for clarification or deny the PR.
+To make the pull request, navigate to https://github.com/(your_github_name)/AntiAdvertiser/compare/, select the commits to include in the PR and click "Create Pull Request". This will notify me and allow me to accept your code into the master branch, ask for clarification or deny the PR.
