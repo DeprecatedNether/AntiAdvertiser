@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.plugin.Plugin;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,17 +43,22 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class AdvertiseListener implements Listener {
+    private AntiAdvertiser plugin;
+
+    public AdvertiseListener(AntiAdvertiser plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority=EventPriority.HIGH)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        if (!AntiAdvertiser.config.getBoolean("monitor.chat")) {
+        if (!plugin.getConfig().getBoolean("monitor.chat")) {
             return;
         }
-        if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
+        if (!plugin.safeChat(e.getPlayer(), e.getMessage())) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                if (AntiAdvertiser.config.getBoolean("stealth-mode")) {
+                if (plugin.getConfig().getBoolean("stealth-mode")) {
                     Iterator<Player> it = e.getRecipients().iterator();
                     while (it.hasNext()) {
                         Player next = it.next();
@@ -69,15 +75,15 @@ public class AdvertiseListener implements Listener {
 
     @EventHandler(priority=EventPriority.HIGH)
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        if (!AntiAdvertiser.config.getBoolean("monitor.commands")) {
+        if (!plugin.getConfig().getBoolean("monitor.commands")) {
             return;
         }
-        if (!AntiAdvertiser.safeChat(e.getPlayer(), e.getMessage())) {
+        if (!plugin.safeChat(e.getPlayer(), e.getMessage())) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.COMMAND);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                if (AntiAdvertiser.config.getBoolean("stealth-mode")) {
-                    e.getPlayer().sendMessage(AntiAdvertiser.prepareString(AntiAdvertiser.config.getString("messages.stealth-mode-command"), e.getPlayer(), e.getMessage()));
+                if (plugin.getConfig().getBoolean("stealth-mode")) {
+                    e.getPlayer().sendMessage(plugin.prepareString(plugin.getConfig().getString("messages.stealth-mode-command"), e.getPlayer(), e.getMessage()));
                 }
                 e.setCancelled(true);
             }
@@ -86,7 +92,7 @@ public class AdvertiseListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void sign(SignChangeEvent e) {
-        if (!AntiAdvertiser.config.getBoolean("monitor.signs")) {
+        if (!plugin.getConfig().getBoolean("monitor.signs")) {
             return;
         }
         // Combine it all into one string. No spaces, so "unknownmc\n.net" becomes "unknownmc.net"
@@ -94,7 +100,7 @@ public class AdvertiseListener implements Listener {
         for (String line : e.getLines()) {
             lines = lines + line + "\n";
         }
-        if (!AntiAdvertiser.safeChat(e.getPlayer(), lines)) {
+        if (!plugin.safeChat(e.getPlayer(), lines)) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
@@ -105,7 +111,7 @@ public class AdvertiseListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void bookDrop(PlayerDropItemEvent e) {
-        if (!AntiAdvertiser.config.getBoolean("monitor.books")) {
+        if (!plugin.getConfig().getBoolean("monitor.books")) {
             return;
         }
         ItemStack drop = e.getItemDrop().getItemStack();
@@ -115,7 +121,7 @@ public class AdvertiseListener implements Listener {
         BookMeta book = (BookMeta) drop.getItemMeta();
         // Process one page at a time as to not spam the mods' chat when detecting an advertisement in a long book and not fill up the logs.
         for (int pg = 1; pg <= book.getPageCount(); pg++) {
-            if (!AntiAdvertiser.safeChat(e.getPlayer(), book.getPage(pg))) {
+            if (!plugin.safeChat(e.getPlayer(), book.getPage(pg))) {
                 PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
                 Bukkit.getServer().getPluginManager().callEvent(event);
                 if (!event.isCancelled()) {
@@ -140,9 +146,9 @@ public class AdvertiseListener implements Listener {
                 message = message.replace("\n", " | ");
                 break;
         }
-        AntiAdvertiser.log.info(e.getPlayer().getName() + " tried advertising with " + e.getType().toString().toLowerCase() + ": " + e.getMessage());
+        plugin.getLogger().info(e.getPlayer().getName() + " tried advertising with " + e.getType().toString().toLowerCase() + ": " + e.getMessage());
         try {
-            String filePath = AntiAdvertiser.detectionsFile.getAbsolutePath();
+            String filePath = plugin.detectionsFile.getAbsolutePath();
             FileWriter fw = new FileWriter(filePath, true);
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             Date date = new Date();
@@ -154,26 +160,26 @@ public class AdvertiseListener implements Listener {
         }
         for (Player online : Bukkit.getServer().getOnlinePlayers()) {
             if (online.hasPermission("antiadvertiser.notify")) {
-                String moderatorMessage = AntiAdvertiser.prepareString(AntiAdvertiser.config.getString("messages.moderator-message"), e.getPlayer(), e.getMessage());
+                String moderatorMessage = plugin.prepareString(plugin.getConfig().getString("messages.moderator-message"), e.getPlayer(), e.getMessage());
                 online.sendMessage(ChatColor.GREEN + "[AntiAdvertiser] " + moderatorMessage);
             }
         }
 
-        if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("WARN")) {
-            String playerMessage = AntiAdvertiser.prepareString(AntiAdvertiser.config.getString("messages.player-message"), e.getPlayer(), e.getMessage());
+        if (plugin.getConfig().getString("onDetect.action").equalsIgnoreCase("WARN")) {
+            String playerMessage = plugin.prepareString(plugin.getConfig().getString("messages.player-message"), e.getPlayer(), e.getMessage());
             player.sendMessage(ChatColor.GREEN + playerMessage);
-        } else if (AntiAdvertiser.config.getString("onDetect.action").equalsIgnoreCase("KICK")) {
-            String kickMessage = AntiAdvertiser.prepareString(AntiAdvertiser.config.getString("messages.kick-message"), e.getPlayer(), e.getMessage());
+        } else if (plugin.getConfig().getString("onDetect.action").equalsIgnoreCase("KICK")) {
+            String kickMessage = plugin.prepareString(plugin.getConfig().getString("messages.kick-message"), e.getPlayer(), e.getMessage());
             player.kickPlayer(ChatColor.GOLD + kickMessage);
-            String kickBcast = AntiAdvertiser.prepareString(AntiAdvertiser.config.getString("messages.kick-broadcast"), e.getPlayer(), e.getMessage());
+            String kickBcast = plugin.prepareString(plugin.getConfig().getString("messages.kick-broadcast"), e.getPlayer(), e.getMessage());
             if (!kickBcast.equals("")) {
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     online.sendMessage(ChatColor.GREEN + kickBcast);
                 }
             }
         }
-        if (!AntiAdvertiser.config.getString("onDetect.command").equals("")) {
-            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), AntiAdvertiser.prepareString(AntiAdvertiser.config.getString("onDetect.command"), e.getPlayer(), e.getMessage()));
+        if (!plugin.getConfig().getString("onDetect.command").equals("")) {
+            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.prepareString(plugin.getConfig().getString("onDetect.command"), e.getPlayer(), e.getMessage()));
         }
     }
 }
