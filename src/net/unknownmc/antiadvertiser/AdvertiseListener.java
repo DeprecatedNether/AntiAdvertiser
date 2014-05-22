@@ -23,6 +23,7 @@ import net.unknownmc.antiadvertiser.api.PlayerAdvertiseEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,6 +34,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -49,27 +51,32 @@ public class AdvertiseListener implements Listener {
     }
 
     @EventHandler(priority=EventPriority.HIGH)
-    public void onPlayerChat(AsyncPlayerChatEvent e) {
-        if (!plugin.getConfig().getBoolean("monitor.chat")) {
-            return;
-        }
-        if (!plugin.safeChat(e.getPlayer(), e.getMessage())) {
-            PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
-            Bukkit.getServer().getPluginManager().callEvent(event);
-            if (!event.isCancelled()) {
-                if (plugin.getConfig().getBoolean("stealth-mode")) {
-                    Iterator<Player> it = e.getRecipients().iterator();
-                    while (it.hasNext()) {
-                        Player next = it.next();
-                        if (!next.equals(e.getPlayer())) {
-                            it.remove();
+    public void onPlayerChat(final AsyncPlayerChatEvent e) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!plugin.getConfig().getBoolean("monitor.chat")) {
+                    return;
+                }
+                if (!plugin.safeChat(e.getPlayer(), e.getMessage())) {
+                    PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), e.getMessage(), AdvertiseType.CHAT);
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    if (!event.isCancelled()) {
+                        if (plugin.getConfig().getBoolean("stealth-mode")) {
+                            Iterator<Player> it = e.getRecipients().iterator();
+                            while (it.hasNext()) {
+                                Player next = it.next();
+                                if (!next.equals(e.getPlayer())) {
+                                    it.remove();
+                                }
+                            }
+                        } else {
+                            e.setCancelled(true);
                         }
                     }
-                } else {
-                    e.setCancelled(true);
                 }
             }
-        }
+        }.runTask(plugin);
     }
 
     @EventHandler(priority=EventPriority.HIGH)
