@@ -45,7 +45,7 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         getConfig().options().copyDefaults(true).copyHeader(true);
         saveDefaultConfig();
-        if ((!getConfig().getString("onDetect.action").equalsIgnoreCase("WARN")) && (getConfig().getString("onDetect.action").equalsIgnoreCase("KICK"))) {
+        if (!(getConfig().getString("onDetect.action").equalsIgnoreCase("WARN")) || (getConfig().getString("onDetect.action").equalsIgnoreCase("KICK"))) {
             getLogger().info("Value of onDetect.action is either empty of invalid (" + getConfig().getString("onDetect.action") + "), defaulting to 'WARN'.");
             getConfig().set("onDetect.action", "WARN");
             saveConfig();
