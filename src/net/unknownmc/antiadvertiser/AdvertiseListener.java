@@ -23,7 +23,6 @@ import net.unknownmc.antiadvertiser.api.PlayerAdvertiseEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -183,7 +182,7 @@ public class AdvertiseListener implements Listener {
                     }
                 }
                 if (!plugin.getConfig().getString("onDetect.command").equals("")) {
-                    Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.prepareString(plugin.getConfig().getString("onDetect.command"), e.getPlayer(), e.getMessage()));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.prepareString(plugin.getConfig().getString("onDetect.command"), e.getPlayer(), e.getMessage()));
                 }
             }
         }.runTask(plugin);
