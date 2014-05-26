@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -274,6 +275,12 @@ public class AntiAdvertiser extends JavaPlugin {
         if (!tlds.isLong("last-check") || tlds.getLong("last-check") < (System.currentTimeMillis() / 1000 - (7*24*60*60))) { // Fetch if never fetched before or last fetched over a week ago
             fetchTLDs();
         }
+        List<String> tldList = tlds.getStringList("tlds");
+        String tldReg = "";
+        for (String tld : tldList) {
+            tldReg = tldReg + tld + "|";
+        }
+        tldRegex = tldReg.substring(0, tldReg.length()-1);
     }
 
     /**
