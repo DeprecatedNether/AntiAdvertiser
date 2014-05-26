@@ -116,7 +116,7 @@ public class AntiAdvertiser extends JavaPlugin {
         if (!getConfig().getBoolean("checks.domains")) {
             return false;
         }
-        String domainPattern = "([a-z-0-9]{1,50})\\.(" + TLDregex.toLowerCase() + ")(?![a-z0-9])";
+        String domainPattern = "([a-z-0-9]{1,50})\\.(" + getValidTLDs() + ")(?![a-z0-9])";
         Pattern r = Pattern.compile(domainPattern);
         Matcher m = r.matcher(str);
         if (m.find()) {
@@ -139,7 +139,7 @@ public class AntiAdvertiser extends JavaPlugin {
         String finish = str;
         for (String whitelist : getConfig().getStringList("whitelist")) {
             if (whitelist.startsWith("regex:")) {
-                finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase().substring(6).replace("{tld}", TLDregex.toLowerCase()), ""); // Replace regex
+                finish = finish.toLowerCase().replaceAll(whitelist.toLowerCase().substring(6).replace("{tld}", getValidTLDs()), ""); // Replace regex
             } else {
                 finish = finish.toLowerCase().replace(whitelist.toLowerCase(), ""); // Don't parse regex
             }
@@ -156,7 +156,7 @@ public class AntiAdvertiser extends JavaPlugin {
     public boolean checkForAbsoluteWhitelist(String str) {
         for (String absolute : getConfig().getStringList("absolute-whitelist")) {
             if (absolute.startsWith("regex:")) {
-                Pattern p = Pattern.compile(absolute.substring(6).replace("{tld}", TLDregex.toLowerCase()));
+                Pattern p = Pattern.compile(absolute.substring(6).replace("{tld}", getValidTLDs()));
                 Matcher m = p.matcher(str);
                 if (m.find()) {
                     sendDebug("Message contained absolute-whitelisted regex " + absolute);
@@ -182,7 +182,7 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         for (String blacklist : getConfig().getStringList("blacklist")) {
             if (blacklist.startsWith("regex:")) {
-                Pattern p = Pattern.compile(blacklist.substring(6).replace("{tld}", TLDregex.toLowerCase()));
+                Pattern p = Pattern.compile(blacklist.substring(6).replace("{tld}", getValidTLDs()));
                 Matcher m = p.matcher(str);
                 if (m.find()) {
                     sendDebug("Message contained blacklisted Regular Expression " + blacklist);
