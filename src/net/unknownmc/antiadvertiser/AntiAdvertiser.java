@@ -273,7 +273,11 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         tlds = YamlConfiguration.loadConfiguration(file);
         if (!tlds.isLong("last-check") || tlds.getLong("last-check") < (System.currentTimeMillis() / 1000 - (7*24*60*60))) { // Fetch if never fetched before or last fetched over a week ago
-            fetchTLDs();
+            if (getConfig().getBoolean("update-tld-list")) {
+                fetchTLDs();
+            } else if (!tlds.isList("tlds")) {
+                return; // tldRegex is already set to the default value. Don't overwrite that value (which would happen if the script continued)
+            }
         }
         List<String> tldList = tlds.getStringList("tlds");
         String tldReg = "";
