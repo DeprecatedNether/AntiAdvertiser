@@ -24,8 +24,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -291,7 +296,26 @@ public class AntiAdvertiser extends JavaPlugin {
      * Queries data.iana.org to obtain a list of valid top level domains.
      */
     public void fetchTLDs() {
-        // TODO Query iana
+        try {
+            URL url = new URL("http://data.iana.org/TLD/tlds-alpha-by-domain.txt");
+            URLConnection con = url.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String ln;
+            List<String> tlds = new ArrayList<String>();
+            while ((ln = in.readLine()) != null) {
+                if (!ln.startsWith("#") && !ln.equals("")) {
+                    tlds.add(ln);
+                }
+            }
+            in.close();
+            File file = new File(getDataFolder(), "tlds.yml");
+            FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
+            fileConfiguration.set("last-check", (System.currentTimeMillis() / 1000));
+            fileConfiguration.set("tlds", tlds);
+            fileConfiguration.save(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
