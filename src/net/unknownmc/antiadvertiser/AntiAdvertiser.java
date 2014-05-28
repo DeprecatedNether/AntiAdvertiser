@@ -296,6 +296,9 @@ public class AntiAdvertiser extends JavaPlugin {
      * Queries data.iana.org to obtain a list of valid top level domains.
      */
     public void fetchTLDs() {
+        if (!getConfig().getBoolean("update-tld-list")) {
+            return;
+        }
         try {
             URL url = new URL("http://data.iana.org/TLD/tlds-alpha-by-domain.txt");
             URLConnection con = url.openConnection();
