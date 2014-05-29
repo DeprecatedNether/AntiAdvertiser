@@ -23,6 +23,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -279,7 +280,12 @@ public class AntiAdvertiser extends JavaPlugin {
         tlds = YamlConfiguration.loadConfiguration(file);
         if (!tlds.isLong("last-check") || tlds.getLong("last-check") < (System.currentTimeMillis() / 1000 - (7*24*60*60))) { // Fetch if never fetched before or last fetched over a week ago
             if (getConfig().getBoolean("update-tld-list")) {
-                fetchTLDs();
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        fetchTLDs();
+                    }
+                }.runTaskAsynchronously(this);
             } else if (!tlds.isList("tlds")) {
                 return; // tldRegex is already set to the default value. Don't overwrite that value (which would happen if the script continued)
             }
