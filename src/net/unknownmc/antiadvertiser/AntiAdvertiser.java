@@ -322,6 +322,7 @@ public class AntiAdvertiser extends JavaPlugin {
             fileConfiguration.set("last-check", (System.currentTimeMillis() / 1000));
             fileConfiguration.set("tlds", tlds);
             fileConfiguration.save(file);
+            loadTLDs();
         } catch (Exception e) {
             e.printStackTrace();
         }
