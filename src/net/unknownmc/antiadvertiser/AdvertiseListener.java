@@ -153,7 +153,7 @@ public class AdvertiseListener implements Listener {
                 try {
                     String filePath = plugin.detectionsFile.getAbsolutePath();
                     FileWriter fw = new FileWriter(filePath, true);
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
                     Date date = new Date();
                     fw.write("[" + dateFormat.format(date) + "] " + player.getName() + " (" + player.getUniqueId() + ") [" + e.getType().toString() + "]: " + message + "\n");
                     fw.close();
