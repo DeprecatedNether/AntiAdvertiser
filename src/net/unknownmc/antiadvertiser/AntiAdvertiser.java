@@ -286,6 +286,7 @@ public class AntiAdvertiser extends JavaPlugin {
                         fetchTLDs();
                     }
                 }.runTaskAsynchronously(this);
+                return;
             } else if (!tlds.isList("tlds")) {
                 return; // tldRegex is already set to the default value. Don't overwrite that value (which would happen if the script continued)
             }
