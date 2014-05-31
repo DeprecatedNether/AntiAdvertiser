@@ -280,6 +280,7 @@ public class AntiAdvertiser extends JavaPlugin {
         tlds = YamlConfiguration.loadConfiguration(file);
         if (!tlds.isLong("last-check") || tlds.getLong("last-check") < (System.currentTimeMillis() / 1000 - (7*24*60*60))) { // Fetch if never fetched before or last fetched over a week ago
             if (getConfig().getBoolean("update-tld-list")) {
+                sendDebug("About to query IANA. Last check: " + tlds.getLong("last-check"));
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -288,6 +289,7 @@ public class AntiAdvertiser extends JavaPlugin {
                 }.runTaskAsynchronously(this);
                 return;
             } else if (!tlds.isList("tlds")) {
+                sendDebug("Was going to query IANA but you disabled this");
                 return; // tldRegex is already set to the default value. Don't overwrite that value (which would happen if the script continued)
             }
         }
