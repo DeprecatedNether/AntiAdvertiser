@@ -168,9 +168,12 @@ public class AdvertiseListener implements Listener {
                     }
                 }
 
+                boolean stealth = plugin.getConfig().getBoolean("stealth-mode");
                 if (plugin.getConfig().getString("onDetect.action").equalsIgnoreCase("WARN")) {
-                    String playerMessage = plugin.prepareString(plugin.getConfig().getString("messages.player-message"), e.getPlayer(), e.getMessage());
-                    player.sendMessage(ChatColor.GREEN + playerMessage);
+                    if (!stealth) {
+                        String playerMessage = plugin.prepareString(plugin.getConfig().getString("messages.player-message"), e.getPlayer(), e.getMessage());
+                        player.sendMessage(ChatColor.GREEN + playerMessage);
+                    }
                 } else if (plugin.getConfig().getString("onDetect.action").equalsIgnoreCase("KICK")) {
                     String kickMessage = plugin.prepareString(plugin.getConfig().getString("messages.kick-message"), e.getPlayer(), e.getMessage());
                     player.kickPlayer(ChatColor.GOLD + kickMessage);
