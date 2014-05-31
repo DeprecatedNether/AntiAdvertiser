@@ -297,6 +297,7 @@ public class AntiAdvertiser extends JavaPlugin {
             tldReg = tldReg + tld + "|";
         }
         tldRegex = tldReg.substring(0, tldReg.length()-1);
+        sendDebug("Loaded list of valid TLDs into memory");
     }
 
     /**
@@ -310,6 +311,7 @@ public class AntiAdvertiser extends JavaPlugin {
             URL url = new URL("http://data.iana.org/TLD/tlds-alpha-by-domain.txt");
             URLConnection con = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            sendDebug("Made HTTP request to data.iana.org");
             String ln;
             List<String> tlds = new ArrayList<String>();
             while ((ln = in.readLine()) != null) {
@@ -334,6 +336,6 @@ public class AntiAdvertiser extends JavaPlugin {
      * @return The list of TLDs
      */
     public String getValidTLDs() {
-        return tldRegex;
+        return tldRegex.toLowerCase();
     }
 }
