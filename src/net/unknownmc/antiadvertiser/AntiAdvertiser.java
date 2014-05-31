@@ -278,7 +278,7 @@ public class AntiAdvertiser extends JavaPlugin {
             }
         }
         tlds = YamlConfiguration.loadConfiguration(file);
-        if (!tlds.isLong("last-check") || tlds.getLong("last-check") < (System.currentTimeMillis() / 1000 - (7*24*60*60))) { // Fetch if never fetched before or last fetched over a week ago
+        if (tlds.get("last-check") == null || tlds.getLong("last-check") < (System.currentTimeMillis() / 1000 - (7*24*60*60))) { // Fetch if never fetched before or last fetched over a week ago
             if (getConfig().getBoolean("update-tld-list")) {
                 sendDebug("About to query IANA. Last check: " + tlds.getLong("last-check"));
                 new BukkitRunnable() {
