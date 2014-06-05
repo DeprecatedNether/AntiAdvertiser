@@ -217,33 +217,23 @@ public class AntiAdvertiser extends JavaPlugin {
             sendDebug("Message is on absolute whitelist");
             return true;
         }
-        if (!player.hasPermission("antiadvertiser.bypass.blacklist")) {
-            if (checkForBlacklist(message)) {
-                sendDebug("Message contains blacklisted message.");
-                return false;
-            }
-            sendDebug("Blacklist not found");
+        if (!player.hasPermission("antiadvertiser.bypass.blacklist") && checkForBlacklist(message)) {
+            sendDebug("Message contains blacklisted message.");
+            return false;
         }
         String whitelist = checkForWhitelist(message);
         if (!whitelist.equals(message)) {
             sendDebug("Message is partially whitelisted, changing " + message + " to " + whitelist);
             message = whitelist;
         }
-        if (!player.hasPermission("antiadvertiser.bypass.ip")) {
-            if (checkForIp(message)) {
-                sendDebug("Message contains IP");
-                return false;
-            }
-            sendDebug("IP not found");
+        if (!player.hasPermission("antiadvertiser.bypass.ip") && checkForIp(message)) {
+            sendDebug("Message contains IP");
+            return false;
         }
-        if (!player.hasPermission("antiadvertiser.bypass.domain")) {
-            if (checkForDomain(message)) {
-                sendDebug("Message contains domain name");
-                return false;
-            }
-            sendDebug("Domain not found");
+        if (!player.hasPermission("antiadvertiser.bypass.domain") && checkForDomain(message)) {
+            sendDebug("Message contains domain name");
+            return false;
         }
-
         sendDebug("Message is good.");
         return true;
     }
