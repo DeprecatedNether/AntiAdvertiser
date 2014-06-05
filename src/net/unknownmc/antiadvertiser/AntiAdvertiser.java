@@ -103,9 +103,7 @@ public class AntiAdvertiser extends JavaPlugin {
             return false;
         }
         String ipPattern = "([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})";
-        Pattern r = Pattern.compile(ipPattern);
-        Matcher m = r.matcher(str);
-        if (m.find()) {
+        if (Pattern.compile(ipPattern).matcher(str).find()) {
             sendDebug("The received message contained an IP.");
             return true;
         }
@@ -123,9 +121,7 @@ public class AntiAdvertiser extends JavaPlugin {
             return false;
         }
         String domainPattern = "([a-z-0-9]{1,50})\\.(" + getValidTLDs() + ")(?![a-z0-9])";
-        Pattern r = Pattern.compile(domainPattern);
-        Matcher m = r.matcher(str);
-        if (m.find()) {
+        if (Pattern.compile(domainPattern).matcher(str).find()) {
             sendDebug("The received message contained a website. Matched regex '" + domainPattern + "'");
             return true;
         }
@@ -188,9 +184,7 @@ public class AntiAdvertiser extends JavaPlugin {
         }
         for (String blacklist : getConfig().getStringList("blacklist")) {
             if (blacklist.startsWith("regex:")) {
-                Pattern p = Pattern.compile(blacklist.substring(6).replace("{tld}", getValidTLDs()));
-                Matcher m = p.matcher(str);
-                if (m.find()) {
+                if (Pattern.compile(blacklist.substring(6).replace("{tld}", getValidTLDs())).matcher(str).find()) {
                     sendDebug("Message contained blacklisted Regular Expression " + blacklist);
                     return true;
                 }
