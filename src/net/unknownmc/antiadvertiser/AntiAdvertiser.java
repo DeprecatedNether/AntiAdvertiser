@@ -63,26 +63,6 @@ public class AntiAdvertiser extends JavaPlugin {
         loadTLDs();
         try {
             Metrics metrics = new Metrics(this);
-            Metrics.Graph detectAction = metrics.createGraph("Detect Action");
-            String action = "Unknown";
-            String configAction = getConfig().getString("onDetect.action").toUpperCase();
-            if (getConfig().getString("onDetect.command").equals("")) {
-                if (configAction.equals("WARN"))
-                    action = "Warning only";
-                else if (configAction.equals("KICK"))
-                    action = "Kick only";
-            } else {
-                if (configAction.equals("WARN"))
-                    action = "Warning and custom command";
-                else if (configAction.equals("KICK"))
-                    action = "Kick and custom command";
-            }
-            detectAction.addPlotter(new Metrics.Plotter(action) {
-                @Override
-                public int getValue() {
-                    return 1;
-                }
-            });
             metrics.start();
         } catch (Exception e) {
             getLogger().warning("Failed to start Metrics!");
