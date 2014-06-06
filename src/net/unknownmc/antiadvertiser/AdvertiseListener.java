@@ -185,7 +185,13 @@ public class AdvertiseListener implements Listener {
                     }
                 }
                 if (!plugin.getConfig().getString("onDetect.command").equals("")) {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.prepareString(plugin.getConfig().getString("onDetect.command"), e.getPlayer(), e.getMessage()));
+                    if (plugin.getConfig().isList("onDetect.command")) {
+                        for (String cmd : plugin.getConfig().getStringList("onDetect.command")) {
+                            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.prepareString(cmd, e.getPlayer(), e.getMessage()));
+                        }
+                    } else {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.prepareString(plugin.getConfig().getString("onDetect.command"), e.getPlayer(), e.getMessage()));
+                    }
                 }
             }
         }.runTask(plugin);
