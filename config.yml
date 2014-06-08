@@ -1,3 +1,6 @@
+# AntiAdvertiser configuration file
+# A guide to the config file can be found at
+# https://github.com/MrEinStain/AntiAdvertiser/wiki/config.yml
 onDetect:
   command: ''
   action: WARN
