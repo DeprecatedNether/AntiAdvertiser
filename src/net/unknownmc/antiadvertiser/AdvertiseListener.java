@@ -98,7 +98,7 @@ public class AdvertiseListener implements Listener {
         // Combine it all into one string. No spaces, so "unknownmc\n.net" becomes "unknownmc.net"
         String lines = "";
         for (String line : e.getLines()) {
-            lines = lines + line + "\n";
+            lines = lines + (plugin.getConfig().getBoolean("sign-merge-lines") ? "" : " ") + line + "\n";
         }
         if (!plugin.safeChat(e.getPlayer(), lines)) {
             PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), lines, AdvertiseType.SIGN);

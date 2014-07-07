@@ -33,3 +33,4 @@ debug: false
 stealth-mode: false
 update-tld-list: true
 config-version: 1
+sign-merge-lines: true
