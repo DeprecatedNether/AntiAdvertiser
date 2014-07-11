@@ -60,13 +60,7 @@ public class AdvertiseListener implements Listener {
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
                 if (plugin.getConfig().getBoolean("stealth-mode")) {
-                    Iterator<Player> it = e.getRecipients().iterator();
-                    while (it.hasNext()) {
-                        Player next = it.next();
-                        if (!next.equals(e.getPlayer())) {
-                            it.remove();
-                        }
-                    }
+                    e.getRecipients().clear();
                 } else {
                     e.setCancelled(true);
                 }
