@@ -18,6 +18,7 @@
 
 package net.unknownmc.antiadvertiser;
 
+import net.unknownmc.antiadvertiser.commands.ReloadCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -60,6 +61,7 @@ public class AntiAdvertiser extends JavaPlugin {
             getConfig().set("onDetect.action", "WARN");
             saveConfig();
         }
+        getCommand("aareload").setExecutor(new ReloadCommand(this));
         loadTLDs();
         try {
             Metrics metrics = new Metrics(this);

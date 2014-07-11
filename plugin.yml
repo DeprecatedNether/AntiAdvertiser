@@ -17,3 +17,6 @@ permissions:
     default: op
   antiadvertiser.bypass.blacklist:
     default: op
+commands:
+  aareload:
+    description: Reloads AntiAdvertiser
