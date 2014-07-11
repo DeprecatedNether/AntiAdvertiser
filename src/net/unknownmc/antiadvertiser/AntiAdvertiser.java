@@ -241,6 +241,7 @@ public class AntiAdvertiser extends JavaPlugin {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
+                return;
             }
         }
         tlds = YamlConfiguration.loadConfiguration(file);
