@@ -29,6 +29,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +51,8 @@ public class AdvertiseListener implements Listener {
     }
 
     @EventHandler(priority=EventPriority.HIGH)
-    public void onPlayerChat(final AsyncPlayerChatEvent e) {
+    @SuppressWarnings("deprecation")
+    public void onPlayerChat(PlayerChatEvent e) {
         if (!plugin.getConfig().getBoolean("monitor.chat")) {
             return;
         }
