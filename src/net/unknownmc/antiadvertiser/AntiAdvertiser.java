@@ -265,6 +265,7 @@ public class AntiAdvertiser extends JavaPlugin {
         for (String tld : tldList) {
             tldReg = tldReg + tld + "|";
         }
+        if (tldReg.length() == 0) return;
         tldRegex = tldReg.substring(0, tldReg.length()-1);
         sendDebug("Loaded list of valid TLDs into memory");
     }
