@@ -1,5 +1,5 @@
 name: AntiAdvertiser
-version: 1.1-dev
+version: 1.1
 main: net.unknownmc.antiadvertiser.AntiAdvertiser
 description: AntiAdvertiser is a configurable plugin that lets you keep your players.
 permissions:
