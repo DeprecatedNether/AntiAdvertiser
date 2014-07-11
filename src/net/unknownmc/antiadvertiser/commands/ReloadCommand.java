@@ -39,6 +39,7 @@ public class ReloadCommand implements CommandExecutor {
             return true;
         }
         main.reloadConfig();
+        sender.sendMessage(ChatColor.GREEN + "Reloaded configuration file.");
         return false;
     }
 }
