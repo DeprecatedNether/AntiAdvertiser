@@ -110,7 +110,28 @@ public class AdvertiseListener implements Listener {
             return;
         }
         ItemStack drop = e.getItemDrop().getItemStack();
+        if (drop.getType() != Material.WRITTEN_BOOK && drop.getType() != Material.BOOK_AND_QUILL) {
+            return;
+        }
+        BookMeta book = (BookMeta) drop.getItemMeta();
+        // Process one page at a time as to not spam the mods' chat when detecting an advertisement in a long book and not fill up the logs.
+        for (int pg = 1; pg <= book.getPageCount(); pg++) {
+            if (!plugin.safeChat(e.getPlayer(), book.getPage(pg))) {
+                PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
+                Bukkit.getServer().getPluginManager().callEvent(event);
+                if (!event.isCancelled()) {
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
 
+    @EventHandler(priority = EventPriority.HIGH)
+    public void itemDrop(PlayerDropItemEvent e) {
+        if (!plugin.getConfig().getBoolean("monitor.item-names")) {
+            return;
+        }
+        ItemStack drop = e.getItemDrop().getItemStack();
         //Prevent advertisements in the display name or lore of an item.
         if(drop.hasItemMeta()) {
             if(drop.getItemMeta().hasDisplayName()) {
@@ -134,21 +155,6 @@ public class AdvertiseListener implements Listener {
                             return;
                         }
                     }
-                }
-            }
-        }
-
-        if (drop.getType() != Material.WRITTEN_BOOK && drop.getType() != Material.BOOK_AND_QUILL) {
-            return;
-        }
-        BookMeta book = (BookMeta) drop.getItemMeta();
-        // Process one page at a time as to not spam the mods' chat when detecting an advertisement in a long book and not fill up the logs.
-        for (int pg = 1; pg <= book.getPageCount(); pg++) {
-            if (!plugin.safeChat(e.getPlayer(), book.getPage(pg))) {
-                PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
-                Bukkit.getServer().getPluginManager().callEvent(event);
-                if (!event.isCancelled()) {
-                    e.setCancelled(true);
                 }
             }
         }
