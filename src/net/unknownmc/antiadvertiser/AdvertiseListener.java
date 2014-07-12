@@ -61,6 +61,7 @@ public class AdvertiseListener implements Listener {
             if (!event.isCancelled()) {
                 if (plugin.getConfig().getBoolean("stealth-mode")) {
                     e.getRecipients().clear();
+                    e.getRecipients().add(e.getPlayer());
                 } else {
                     e.setCancelled(true);
                 }
