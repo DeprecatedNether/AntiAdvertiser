@@ -19,5 +19,5 @@
 package net.unknownmc.antiadvertiser.api;
 
 public enum AdvertiseType {
-    CHAT, COMMAND, SIGN, BOOK;
+    CHAT, COMMAND, SIGN, BOOK, ITEM;
 }

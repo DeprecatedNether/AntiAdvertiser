@@ -60,13 +60,7 @@ public class AdvertiseListener implements Listener {
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
                 if (plugin.getConfig().getBoolean("stealth-mode")) {
-                    Iterator<Player> it = e.getRecipients().iterator();
-                    while (it.hasNext()) {
-                        Player next = it.next();
-                        if (!next.equals(e.getPlayer())) {
-                            it.remove();
-                        }
-                    }
+                    e.getRecipients().clear();
                 } else {
                     e.setCancelled(true);
                 }
@@ -116,6 +110,34 @@ public class AdvertiseListener implements Listener {
             return;
         }
         ItemStack drop = e.getItemDrop().getItemStack();
+
+        //Prevent advertisements in the display name or lore of an item.
+        if(drop.hasItemMeta()) {
+            if(drop.getItemMeta().hasDisplayName()) {
+                if(!plugin.safeChat(e.getPlayer(), drop.getItemMeta().getDisplayName())) {
+                    PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), drop.getItemMeta().getDisplayName(), AdvertiseType.ITEM);
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    if (!event.isCancelled()) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+
+            if(drop.getItemMeta().hasLore()) {
+                for(String lore : drop.getItemMeta().getLore()) {
+                    if(!plugin.safeChat(e.getPlayer(), lore)) {
+                        PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), drop.getItemMeta().getDisplayName(), AdvertiseType.ITEM);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                        if (!event.isCancelled()) {
+                            e.setCancelled(true);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
         if (drop.getType() != Material.WRITTEN_BOOK && drop.getType() != Material.BOOK_AND_QUILL) {
             return;
         }
