@@ -20,6 +20,7 @@ package net.unknownmc.antiadvertiser;
 
 import net.unknownmc.antiadvertiser.commands.ReloadCommand;
 import net.unknownmc.antiadvertiser.listeners.AdvertiseListener;
+import net.unknownmc.antiadvertiser.listeners.HandleAdvertising;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,6 +47,7 @@ public class AntiAdvertiser extends JavaPlugin {
 
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new AdvertiseListener(this), this);
+        getServer().getPluginManager().registerEvents(new HandleAdvertising(this), this);
         getDataFolder().mkdirs();
         detectionsFile = new File(getDataFolder(), "detections.txt");
         try {
