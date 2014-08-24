@@ -19,6 +19,7 @@
 package net.unknownmc.antiadvertiser;
 
 import net.unknownmc.antiadvertiser.commands.ReloadCommand;
+import net.unknownmc.antiadvertiser.listeners.AdvertiseListener;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
