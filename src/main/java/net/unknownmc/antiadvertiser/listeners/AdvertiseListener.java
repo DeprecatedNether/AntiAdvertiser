@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -138,6 +139,30 @@ public class AdvertiseListener implements Listener {
                             e.setCancelled(true);
                             return;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void bookMove(InventoryClickEvent e) {
+        if (!plugin.getConfig().getBoolean("monitor.books"))
+            return;
+        ItemStack[] checks = {e.getCurrentItem(), e.getCursor()};
+        Player clicker = (Player) e.getWhoClicked();
+        for (ItemStack item : checks) {
+            if (item == null)
+                continue;
+            if (item.getType() != Material.BOOK_AND_QUILL && item.getType() != Material.WRITTEN_BOOK)
+                continue;
+            BookMeta book = (BookMeta) item.getItemMeta();
+            for (String page : book.getPages()) {
+                if (!plugin.safeChat(clicker, page)) {
+                    PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(clicker, page, AdvertiseType.BOOK);
+                    Bukkit.getServer().getPluginManager().callEvent(event);
+                    if (!event.isCancelled()) {
+                        e.setCancelled(true);
                     }
                 }
             }
