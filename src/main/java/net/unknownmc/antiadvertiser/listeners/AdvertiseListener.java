@@ -100,9 +100,9 @@ public class AdvertiseListener implements Listener {
         }
         BookMeta book = (BookMeta) drop.getItemMeta();
         // Process one page at a time as to not spam the mods' chat when detecting an advertisement in a long book and not fill up the logs.
-        for (int pg = 1; pg <= book.getPageCount(); pg++) {
-            if (!plugin.safeChat(e.getPlayer(), book.getPage(pg))) {
-                PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), book.getPage(pg), AdvertiseType.BOOK);
+        for (String page : book.getPages()) {
+            if (!plugin.safeChat(e.getPlayer(), page)) {
+                PlayerAdvertiseEvent event = new PlayerAdvertiseEvent(e.getPlayer(), page, AdvertiseType.BOOK);
                 Bukkit.getServer().getPluginManager().callEvent(event);
                 if (!event.isCancelled()) {
                     e.setCancelled(true);
